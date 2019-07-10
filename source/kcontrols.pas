@@ -2232,7 +2232,7 @@ var
 {$ENDIF}
 begin
 {$IFDEF USE_THEMES}
-  with ThemeServices do if IsThemed and ThemesEnabled then
+  with StyleServices do if IsThemed and Enabled then
   begin
     // If OS themes are enabled and the client edge border is set for the window then prevent the default window proc
     // from painting the old border to avoid flickering.
@@ -2292,7 +2292,7 @@ begin
   if IsThemed then
   begin
     inherited;
-    ThemeServices.UpdateThemes;
+    StyleServices.UpdateThemes;
     RedrawWindow(Handle, nil, 0, RDW_INVALIDATE or RDW_VALIDATE or RDW_FRAME);
   end;
 end;

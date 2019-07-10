@@ -830,7 +830,7 @@ function VerticalShapePosition(AAlignment: TKVAlign; const ABoundary: TRect; con
 implementation
 
 uses
-  ClipBrd, Math, SysUtils, KRes;
+  ClipBrd, Math, SysUtils, KRes, System.UITypes;
 
 procedure BlendLine(Src, Dest: PKColorRecs; Count: Integer);
 var
@@ -1152,7 +1152,7 @@ begin
         ButtonTheme := tbPushButtonDefaulted
       else
         ButtonTheme := tbPushButtonNormal;
-      ThemeServices.DrawElement(TmpCanvas.Handle, ThemeServices.GetElementDetails(ButtonTheme), TmpRect);
+      StyleServices.DrawElement(TmpCanvas.Handle, StyleServices.GetElementDetails(ButtonTheme), TmpRect);
     end else
   {$ENDIF}
     begin
@@ -1441,20 +1441,22 @@ var
 {$ENDIF}
 {$IFDEF FPC}
 {$ELSE}
+{$IFDEF USE_THEMES}
 var
   Theme: HTHEME;
+{$ENDIF}
 {$ENDIF}
 begin
   Result.cx := 0;
   Result.cy := 0;
 {$IFDEF USE_THEMES}
-  if ThemeServices.ThemesEnabled and ThemeServices.ThemesAvailable then
+  if StyleServices.Enabled and StyleServices.Available then
   begin
   {$IFDEF FPC}
-     Result := ThemeServices.GetDetailSize(ThemeServices.GetElementDetails(tbCheckBoxCheckedNormal));
+     Result := StyleServices.GetDetailSize(StyleServices.GetElementDetails(tbCheckBoxCheckedNormal));
      Exit;
   {$ELSE}
-     Theme := ThemeServices.Theme[teButton];
+     Theme := StyleServices.Theme[teButton];
      if GetThemePartSize(Theme, 0, BP_CHECKBOX, CBS_CHECKEDNORMAL, nil, TS_TRUE, Result) = S_OK then
        Exit;
   {$ENDIF}

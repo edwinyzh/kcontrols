@@ -31,7 +31,7 @@ uses
   Windows, Messages,
 {$ENDIF}
   SysUtils, Classes, Contnrs, Graphics, Controls, Forms, StdCtrls, ExtCtrls,
-  KFunctions, KGraphics, KControls, Types
+  KFunctions, KGraphics, KControls, Types, System.UITypes
 {$IFDEF TKGRID_USE_JCL}
   , JclUnicode
 {$ENDIF}
@@ -5844,9 +5844,9 @@ var
   TmpCanvas: TCanvas;
   TmpRect: TRect;
   State: Integer;
-  IsHot: Boolean;
-  MousePt: TPoint;
 {$IFDEF USE_THEMES}
+  MousePt: TPoint;
+  IsHot: Boolean;
   CheckBoxTheme: TThemedButton;
 {$ENDIF}
 begin
@@ -5906,7 +5906,7 @@ begin
         else
           CheckBoxTheme := tbCheckBoxMixedDisabled;
         end;
-      ThemeServices.DrawElement(TmpCanvas.Handle, ThemeServices.GetElementDetails(CheckBoxTheme), TmpRect);
+        StyleServices.DrawElement(TmpCanvas.Handle, StyleServices.GetElementDetails(CheckBoxTheme), TmpRect);
     end else
   {$ENDIF}
     begin
@@ -5956,7 +5956,7 @@ var
 {$ENDIF}
 begin
 {$IFDEF USE_THEMES}
-  if FGrid.ThemedCells then with ThemeServices do
+  if FGrid.ThemedCells then with StyleServices do
   begin
     if gdSelected in FState then
       Header := thHeaderItemPressed
@@ -6091,11 +6091,11 @@ begin
     else
       FCanvas.FillRect(ARect);
   {$IFDEF FPC}
-    Details := ThemeServices.GetElementDetails(tmPopupItemHot);
-    ThemeServices.DrawElement(FCanvas.Handle, Details, ARect, RClip);
+    Details := StyleServices.GetElementDetails(tmPopupItemHot);
+    StyleServices.DrawElement(FCanvas.Handle, Details, ARect, RClip);
     Color := ColorToRGB(clWindowText); // getting text color not supported
   {$ELSE}
-    SelectionTheme := ThemeServices.Theme[teMenu];
+    SelectionTheme := StyleServices.Theme[teMenu];
     DrawThemeBackground(SelectionTheme, FCanvas.Handle, MENU_POPUPITEM, MPI_HOT, ARect, RClip);
     GetThemeColor(SelectionTheme, MENU_POPUPITEM, MPI_HOT, TMT_TEXTCOLOR, Color);
   {$ENDIF}
@@ -8616,7 +8616,7 @@ end;
 function TKCustomGrid.GetThemes: Boolean;
 begin
 {$IFDEF USE_THEMES}
-  Result := ThemeServices.ThemesEnabled
+  Result := StyleServices.Enabled
 {$ELSE}
   Result := False;
 {$ENDIF}
@@ -11087,7 +11087,7 @@ end;
 procedure TKCustomGrid.PaintHeaderAlignment(ACanvas: TCanvas; ARect: TRect);
 begin
   {$IFDEF USE_THEMES}
-  if ThemedCells then with ThemeServices do
+  if ThemedCells then with StyleServices do
   begin
     Inc(ARect.Bottom);
     DrawElement(ACanvas.Handle, GetElementDetails(thHeaderItemRightNormal), ARect)
@@ -13237,11 +13237,13 @@ procedure TKCustomGrid.UpdateEditor(Show: Boolean);
         EditorResize(FEditor, FEditorCell.Col, FEditorCell.Row, R);
       with R do
       begin
-        if ThemeServices.ThemesAvailable and ThemeServices.ThemesEnabled then // due to TComboBox bug in VCL!
+        {$IFDEF USE_THEMES}
+        if StyleServices.Available and StyleServices.Enabled then // due to TComboBox bug in VCL!
         begin
           FEditor.Constraints.MaxWidth := Right - Left + 1;
           FEditor.Constraints.MaxHeight := Bottom - Top + 1;
         end;
+        {$ENDIF}
         FEditor.Height := Bottom - Top;
         FEditor.Width := Right - Left;
         if gxEditorVCenter in FOptionsEx then

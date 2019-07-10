@@ -109,7 +109,7 @@ type
 implementation
 
 uses
-  SysUtils, KRes;
+  SysUtils, KRes, System.Contnrs;
 
 { TLogEventObject }
 

@@ -27,7 +27,7 @@ uses
     Windows, Messages,
   {$ENDIF}
     SysUtils, Classes, Controls, Forms, Graphics,
-    ActnList, StdCtrls, Dialogs, Buttons, ImgList,
+    ActnList, StdCtrls, Dialogs, Buttons, ImgList, System.UITypes,
     KFunctions, KGraphics, KControls
   {$IFDEF USE_THEMES}
     , Themes
@@ -470,8 +470,10 @@ begin
   else
     Ofs := 0;
   States := [];
-  if ThemeServices.ThemesEnabled then
+  {$IFDEF USE_THEMES}
+  if StyleServices.Enabled then
     Include(States, bsUseThemes);
+  {$ENDIF}
   if not Enabled then
     Include(States, bsDisabled);
   if cbsPressed in FStates then
