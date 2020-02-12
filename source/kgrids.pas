@@ -5844,9 +5844,9 @@ var
   TmpCanvas: TCanvas;
   TmpRect: TRect;
   State: Integer;
-{$IFDEF USE_THEMES}
-  MousePt: TPoint;
   IsHot: Boolean;
+  MousePt: TPoint;
+{$IFDEF USE_THEMES}
   CheckBoxTheme: TThemedButton;
 {$ENDIF}
 begin

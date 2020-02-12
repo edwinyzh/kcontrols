@@ -27,7 +27,8 @@ uses
   Windows, Messages,
 {$ENDIF}
   SysUtils, Classes, Graphics, Controls,
-  ExtCtrls, StdCtrls, Forms, KFunctions, KGraphics, KControls, KEditCommon;
+  ExtCtrls, StdCtrls, Forms, KFunctions, KGraphics, KControls, KEditCommon,
+  System.UITypes;
 
 type
   { Declares possible values for the @link(TKCustomHexEditor.AddressMode) property }

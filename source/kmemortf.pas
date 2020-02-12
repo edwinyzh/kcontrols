@@ -452,7 +452,7 @@ function CPToCharSet(ACodePage: Integer): TFontCharSet;
 implementation
 
 uses
-  Math, SysUtils, KEditCommon, KHexEditor, KRes
+  Math, SysUtils, KEditCommon, KHexEditor, KRes, System.UITypes
 {$IFDEF FPC}
   , LCLIntf, LCLProc, LConvEncoding, LCLType, LazUTF8
 {$ELSE}

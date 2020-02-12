@@ -27,7 +27,8 @@ uses
   Windows, Messages,
 {$ENDIF}
   SysUtils, Classes, Graphics, Controls, Contnrs, Types, ActnList,
-  ExtCtrls, StdCtrls, Forms, KFunctions, KControls, KGraphics, KEditCommon;
+  ExtCtrls, StdCtrls, Forms, KFunctions, KControls, KGraphics, KEditCommon,
+  System.UITypes;
 
 const
   { Minimum for the @link(TKCustomMemo.UndoLimit) property. }
@@ -12922,10 +12923,14 @@ begin
           S := Copy(AValue, St, I - St);
           S := UnicodeStringReplace(S, cCR, '', [rfReplaceAll]); // on Unix systems
           if (S <> '') and InsertString(AIndex, False, S) then
+          begin
             Inc(AIndex, StringLength(S));
+            UpdateAttributes;             // drb, November 2019
+          end;
         end;
         if InsertParagraph(AIndex, True) then
           Inc(AIndex);
+        UpdateAttributes;
         St := I + 1;
       end;
       Inc(I);
@@ -12934,7 +12939,8 @@ begin
     begin
       S := Copy(AValue, St, I - St + 1);
       if S <> '' then
-        InsertString(AIndex, True, S);
+        if InsertString(AIndex, True, S) then
+            UpdateAttributes;             // drb, November 2019
     end;
   finally
     UnlockUpdate;

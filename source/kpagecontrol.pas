@@ -27,6 +27,7 @@ uses
   Windows, Messages,
 {$ENDIF}
   Classes, Controls, Graphics, ExtCtrls, Forms, StdCtrls, ComCtrls, Contnrs, ImgList, Buttons,
+  System.UITypes,
   KFunctions, KControls, KButtons;
 
 type
@@ -457,7 +458,7 @@ type
 implementation
 
 uses
-  SysUtils
+  SysUtils, System.Types
 {$IFDEF USE_THEMES}
   , Themes
  {$IFNDEF FPC}
